@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    ddd
+    <script type="module">
+        import { observe } from "./core/observer/index.js";
+        import { Watcher } from "./core/observer/watcher.js";
+
+        const obj = {
+            a: {
+                b: {
+                    c: 2
+                }
+            },
+            d: {
+                g: 2
+            }
+        }
+
+        observe(obj);
+
+        let a = 0;
+
+        new Watcher(obj, 'a.b.c', (obj, value, oldvalue) => {
+            a++;
+            console.log(a, '---a')
+            console.log('★★watcher★★', 'obj:', obj, 'value:', value, 'oldvalue:', oldvalue)
+        });
+
+        obj.a.b.c = 6;
+
+    </script>
+</body>
+
+</html>
