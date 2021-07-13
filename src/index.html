@@ -20,23 +20,36 @@
                     c: 2
                 }
             },
-            d: {
-                g: 2
-            }
+            d: [
+                1,
+                2,
+                {
+                    g: 2
+                }
+            ]
         }
 
         observe(obj);
 
         let a = 0;
 
-        new Watcher(obj, 'a.b.c', (obj, value, oldvalue) => {
+        new Watcher(obj, 'd', (obj, value, oldvalue) => {
+            a++;
+            console.log(a, '---a')
+            console.log('★★watcher★★', 'obj:', obj, 'value:', value, 'oldvalue:', oldvalue)
+        });
+        new Watcher(obj, 'a.b', (obj, value, oldvalue) => {
             a++;
             console.log(a, '---a')
             console.log('★★watcher★★', 'obj:', obj, 'value:', value, 'oldvalue:', oldvalue)
         });
 
-        obj.a.b.c = 6;
-
+        obj.a.b = {
+            c: 9
+        };
+        obj.a.b.c = 8;
+        console.log(obj)
+        obj.d.push(4)
     </script>
 </body>
 

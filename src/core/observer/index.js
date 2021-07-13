@@ -1,10 +1,13 @@
 import { Dep } from "./dep.js";
+import { arrayMethods } from "./array.js";
 
 export class Observer {
     constructor(data) {
+        this.dep = new Dep()
         def(data, '__ob__', this)
         if (Array.isArray(data)) {
-
+            data.__proto__ = arrayMethods;
+            this.observeArray(data)
         } else {
             this.walk(data);
         }
@@ -15,17 +18,29 @@ export class Observer {
             defineReactive(data, key, data[key]);
         }
     }
+
+    observeArray(items) {
+        for (let i = 0, l = items.length; i < l; i++) {
+            observe(items[i])
+        }
+    }
 }
 
 export function defineReactive(obj, key, val) {
     if (typeof obj !== 'object') return;
     let dep = new Dep;
-    typeof val === 'object' && observe(val);
+    let childOb = typeof val === 'object' && observe(val);
     Object.defineProperty(obj, key, {
         configurable: true,
         enumerable: true,
         get() {
             dep.depend();
+            if (childOb) {
+                childOb.dep.depend();
+                if (Array.isArray(val)) {
+                    dependArray(val)
+                }
+            }
             return val;
         },
         set(newValue) {
@@ -52,5 +67,15 @@ export function def(obj, key, val) {
         writable: true,
         configurable: true
     });
+}
+
+function dependArray(value) {
+    for (let e, i = 0, l = value.length; i < l; i++) {
+        e = value[i]
+        e && e.__ob__ && e.__ob__.dep.depend()
+        if (Array.isArray(e)) {
+            dependArray(e)
+        }
+    }
 }
 
