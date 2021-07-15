@@ -5,6 +5,7 @@ let uid = 0;
 export class Watcher {
     constructor(vm, expression, cb) {
         this.vm = vm;
+        this.expression = expression
         this.id = ++uid;
         this.newDepIds = new Set();
         this.getter = parsePath(expression);

@@ -17,15 +17,25 @@
         const obj = {
             a: {
                 b: {
-                    c: 2
-                }
+                    d: {
+                        a: 2
+                    }
+                },
+                c: 2,
             },
             d: [
                 1,
                 2,
                 {
-                    g: 2
-                }
+                    g: [2]
+                },
+                [
+                    1,
+                    2,
+                    {
+                        g: [2]
+                    }
+                ]
             ]
         }
 
@@ -38,18 +48,30 @@
             console.log(a, '---a')
             console.log('★★watcher★★', 'obj:', obj, 'value:', value, 'oldvalue:', oldvalue)
         });
-        new Watcher(obj, 'a.b', (obj, value, oldvalue) => {
+        new Watcher(obj, 'a', (obj, value, oldvalue) => {
             a++;
             console.log(a, '---a')
             console.log('★★watcher★★', 'obj:', obj, 'value:', value, 'oldvalue:', oldvalue)
         });
+        // new Watcher(obj, 'a.b.c', (obj, value, oldvalue) => {
+        //     a++;
+        //     console.log(a, '---a')
+        //     console.log('★★watcher★★', 'obj:', obj, 'value:', value, 'oldvalue:', oldvalue)
+        // });
 
-        obj.a.b = {
-            c: 9
-        };
-        obj.a.b.c = 8;
-        console.log(obj)
+        // obj.a.b.d.a = 3;
+        // obj.d[2].g.push(4)
+        // console.log(obj)
         obj.d.push(4)
+        obj.d[3].push(5)
+        obj.a.c = 6
+        // obj.a = 1
+        // setTimeout(() => {
+        //     obj.a.b.c = 9;
+        //     // obj.d.push(4)
+        //     console.log(obj)
+        // }, 5000);
+        console.log(obj)
     </script>
 </body>
 

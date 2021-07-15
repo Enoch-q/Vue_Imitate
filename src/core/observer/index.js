@@ -30,6 +30,7 @@ export function defineReactive(obj, key, val) {
     if (typeof obj !== 'object') return;
     let dep = new Dep;
     let childOb = typeof val === 'object' && observe(val);
+    console.log(obj, key, childOb)
     Object.defineProperty(obj, key, {
         configurable: true,
         enumerable: true,
@@ -37,6 +38,7 @@ export function defineReactive(obj, key, val) {
             dep.depend();
             if (childOb) {
                 childOb.dep.depend();
+                console.log(obj, key, val, childOb, '--------------------')
                 if (Array.isArray(val)) {
                     dependArray(val)
                 }
@@ -46,6 +48,7 @@ export function defineReactive(obj, key, val) {
         set(newValue) {
             if (newValue === val) return;
             val = newValue;
+            childOb = observe(newValue)
             dep.notify();
         }
     });
