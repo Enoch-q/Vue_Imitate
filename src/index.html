@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    ddd
+    <script type="module">
+        import { observe } from "./core/observer/index.js";
+        import { Watcher } from "./core/observer/watcher.js";
+
+        const obj = {
+            a: {
+                b: {
+                    d: {
+                        a: 2
+                    }
+                },
+                c: 2,
+            },
+            d: [
+                1,
+                2,
+                {
+                    g: [2]
+                },
+                [
+                    1,
+                    2,
+                    {
+                        g: [2]
+                    }
+                ]
+            ]
+        }
+
+        observe(obj);
+
+        let a = 0;
+
+        new Watcher(obj, 'd', (obj, value, oldvalue) => {
+            a++;
+            console.log(a, '---a')
+            console.log('★★watcher★★', 'obj:', obj, 'value:', value, 'oldvalue:', oldvalue)
+        });
+        new Watcher(obj, 'a', (obj, value, oldvalue) => {
+            a++;
+            console.log(a, '---a')
+            console.log('★★watcher★★', 'obj:', obj, 'value:', value, 'oldvalue:', oldvalue)
+        });
+        // new Watcher(obj, 'a.b.c', (obj, value, oldvalue) => {
+        //     a++;
+        //     console.log(a, '---a')
+        //     console.log('★★watcher★★', 'obj:', obj, 'value:', value, 'oldvalue:', oldvalue)
+        // });
+
+        // obj.a.b.d.a = 3;
+        // obj.d[2].g.push(4)
+        // console.log(obj)
+        obj.d.push(4)
+        obj.d[3].push(5)
+        obj.a.c = 6
+        // obj.a = 1
+        // setTimeout(() => {
+        //     obj.a.b.c = 9;
+        //     // obj.d.push(4)
+        //     console.log(obj)
+        // }, 5000);
+        console.log(obj)
+    </script>
+</body>
+
+</html>
